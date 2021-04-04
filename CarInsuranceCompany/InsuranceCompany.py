@@ -3,6 +3,7 @@ from Agent import *
 from Claims import *
 from Payments import *
 
+
 class InsuranceCompany:
     def __init__(self, name):
         self.name = name  # Name of the Insurance company
@@ -11,9 +12,6 @@ class InsuranceCompany:
         self.claims = []  # list of claims
         self.paymentsin = []  # list of incoming payments
         self.paymentsout = []  # list of outgoing payments
-
-        self.addCustomer("majdramunqk", "pri mamina zlatna")
-
 
     def getCustomers(self):
         return list(self.customers)
@@ -76,10 +74,12 @@ class InsuranceCompany:
     def addPaymentIN(self, date, customer_id, amount_received):
         p = PaymentIncoming(date, customer_id, amount_received)
         self.paymentsin.append(p)
+        return p
 
     def addPaymentOUT(self, date, agent_id, amount_sent):
         p = PaymentOutgoing(date, agent_id, amount_sent)
         self.paymentsout.append(p)
+        return p
 
     def getPaymentsIn(self):
         p = self.paymentsin
@@ -88,4 +88,28 @@ class InsuranceCompany:
     def getPaymentsOut(self):
         p = self.paymentsout
         return p
+
+    def getRevenueByAgentID(self, agent_id):
+        revenue = 0
+        for p in self.paymentsout:
+            if (p.agent_id == agent_id):
+                revenue += int(p.amount_sent)
+        return revenue
+
+    def getNumberOfCustomersByAgentID(self, agent_id):
+        count = 0
+        for c in self.customers:
+            if (c.agent_id == agent_id):
+                count += 1
+        return count
+
+    def getCustomersByAgentID(self, agent_id):
+        list_customers = []
+        for c in self.customers:
+            if (c.agent_id == agent_id):
+                list_customers.append(c)
+        return list_customers
+
+    def getAgent(self):
+        return self.agents[0]
 
