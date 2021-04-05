@@ -98,7 +98,6 @@ def test_deleteAgent(data):
     assert count == 1
 
 
-
 def test_getClaims(data):
     company = data.get("company")
     count = len(company.getClaims())
@@ -153,3 +152,53 @@ def test_addPaymentOUT(data):
     count = len(company.paymentsout)
 
     assert count == 2
+
+
+def test_getPaymentsIn(data):
+    company = data.get("company")
+    count = len(company.getPaymentsIn())
+    assert count == 1
+
+
+def test_getPaymentsOut(data):
+    company = data.get("company")
+    count = len(company.getPaymentsOut())
+    assert count == 1
+
+
+def test_getRevenueByAgentID(data):
+    company = data.get("company")
+    a = data.get("agent")
+    pout = data.get("paymentout")
+    revenue = company.getRevenueByAgentID(a.ID)
+
+    assert revenue == int(pout.amount_sent)
+
+
+def test_getNumberOfCustomersByAgentID(data):
+    company = data.get("company")
+    a = data.get("agent")
+    c = data.get("customer")
+    a.addCustomer(c)
+    c.addAgentID(a.ID)
+    count = company.getNumberOfCustomersByAgentID(a.ID)
+
+    assert count == 1
+
+
+def test_getCustomersByAgentID(data):
+    company = data.get("company")
+    a = data.get("agent")
+    c = data.get("customer")
+    a.addCustomer(c)
+    c.addAgentID(a.ID)
+    customers = company.getCustomersByAgentID(a.ID)
+
+    assert customers[0].name == "Leigh"
+
+
+
+def test_getAgent(data):
+    company = data.get("company")
+    a = company.getAgent()
+    assert a.name == "Sarah"
